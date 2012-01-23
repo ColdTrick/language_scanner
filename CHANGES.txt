@@ -1,0 +1,11 @@
+= Version History =
+x.x:
+
+- added: README.txt to explain the plugin
+- added: CHANGES.txt for version history
+- added: plugin list to scan
+- changed: layout of scan result
+
+0.1 (2011-12-20):
+
+- initial version

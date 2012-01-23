@@ -11,6 +11,6 @@
 		<type>elgg_version</type>
 		<version>2010030101</version>
 	</requires>
-	<admin_interface>simple</admin_interface>
-	<activate_on_install>false</activate_on_install>
+	
+	<category>ColdTrick</category>
 </plugin_manifest>

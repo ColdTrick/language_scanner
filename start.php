@@ -5,12 +5,13 @@
 	function language_scanner_init()
 	{		
 		
-		elgg_register_menu_item('page', array(	'name' 			=> 'language_scannerw',
+		elgg_register_menu_item('page', array(	'name' 			=> 'language_scanner',
 												'href' 			=> 'admin/language/scan',
 												'text' 			=> elgg_echo('language_scanner'),
 												'context' 		=> 'admin',
 												'section' 		=> 'administer'
 											));
+		
 	}
 	
 	function language_scanner_pagesetup()
