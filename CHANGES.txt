@@ -1,4 +1,9 @@
 = Version History =
+
+0.3 (2012-01-25)
+
+- added: js elgg.echo support
+
 0.2 (2012-01-23):
 
 - added: README.txt to explain the plugin
