@@ -17,13 +17,13 @@
 			{
 				foreach($language_keys as $key => $value)
 				{
-					if(strpos($content, 'elgg_echo("' . $key . '")') !== false)
+					if(strpos($content, 'elgg_echo("' . $key . '"') !== false)
 					{
 						$found_keys[$key] = $value;
 						unset($language_keys[$key]);
 						continue;
 					}
-					if(strpos($content, 'elgg_echo(\'' . $key . '\')') !== false)
+					if(strpos($content, 'elgg_echo(\'' . $key . '\'') !== false)
 					{
 						$found_keys[$key] = $value;
 						unset($language_keys[$key]);
