@@ -41,6 +41,18 @@
 						unset($language_keys[$key]);
 						continue;
 					}
+					if(strpos($content, 'elgg.echo(\'' . $key . '\')') !== false)
+					{
+						$found_keys[$key] = $value;
+						unset($language_keys[$key]);
+						continue;
+					}
+					if(strpos($content, 'elgg.echo("' . $key . '")') !== false)
+					{
+						$found_keys[$key] = $value;
+						unset($language_keys[$key]);
+						continue;
+					}
 				}
 			}
 		}
