@@ -2,21 +2,8 @@
 
 	include(dirname(__FILE__) . '/lib/functions.php');
 	
-	function language_scanner_init()
-	{		
-		
-		elgg_register_menu_item('page', array(	'name' 			=> 'language_scanner',
-												'href' 			=> 'admin/language/scan',
-												'text' 			=> elgg_echo('language_scanner'),
-												'context' 		=> 'admin',
-												'section' 		=> 'administer'
-											));
-		
-	}
-	
-	function language_scanner_pagesetup()
-	{
-		
+	function language_scanner_init() {
+		elgg_register_admin_menu_item('administer', 'language_scanner', 'administer_utilities');
 	}
 	
 	elgg_register_event_handler("init", "system", "language_scanner_init");
