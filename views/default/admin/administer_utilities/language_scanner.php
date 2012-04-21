@@ -1,6 +1,5 @@
 <?php
 
-	// load library
 	elgg_load_library('language_scanner:functions');
 
 	if($plugin_name = get_input('plugin_name')){
@@ -16,6 +15,16 @@
 			$body .= '<ul>';
 			
 			foreach($language_scanner_result['unused'] as $key => $value) {
+				$body .= '<li>' . strip_tags($key) . '</li>';
+			}
+			
+			$body .= '</ul>';
+		}
+		
+		if($language_scanner_result['skipped']) {
+			$body .= '<h3 class="mtm mbs">' . elgg_echo('language_scanner:result:skipped_keys') . '</h3><ul>';
+			
+			foreach($language_scanner_result['skipped'] as $key => $value) {
 				$body .= '<li>' . strip_tags($key) . '</li>';
 			}
 			

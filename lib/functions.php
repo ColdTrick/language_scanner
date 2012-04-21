@@ -5,11 +5,14 @@
 		$found_keys = array();
 
 		if($language_keys = language_scanner_get_language_keys_from_plugin($plugin_name)) {
-			$plugin_files = language_scanner_get_plugin_files($plugin_name);
-					
+			$plugin_files = language_scanner_get_plugin_files($plugin_name);			
+	
 			$result['start_count'] = count($language_keys);
 			
-			$i = 0;
+			// skip language key using for object's plugin
+			$result['skipped'] = language_scanner_skip_language_keys_from_object_plugin($plugin_name, $language_keys);
+			$language_keys = array_diff_key($language_keys, $result['skipped']);
+
 			foreach($plugin_files as $file) {
 				if($content = language_scanner_get_content_from_file($file)) {
 					foreach($language_keys as $key => $value) {
@@ -122,11 +125,41 @@
 						$language_arrays = array_merge($language_arrays, $language_array_from_file);
 					}
 				}
-
+			
 				return $language_arrays;
 			} else {
 				return false;
 			}
+		} else {
+			return false;
+		}
+	}
+
+	function language_scanner_skip_language_keys_from_object_plugin($plugin_name, $language_keys) {
+		$language_skipped = array();
+
+		$plugins_path = elgg_get_plugins_path();
+		$start_file = $plugins_path . $plugin_name . '/start.php';
+		
+		if($contents = file_get_contents($start_file)) {
+			preg_match_all('/elgg_register_entity_type\(([^;]*)\)/', $contents, $entities);
+			foreach($entities[1] as $entity) {
+				$entity = preg_replace('/\'|object|,|\s/', '', $entity);
+				
+				$language_keys_to_skip = array(
+					'item:object:'.$entity => '',
+					'river:create:object:'.$entity => '',
+					'river:update:object:'.$entity => '',
+					'river:comment:object:'.$entity => '',
+				);
+
+				foreach($language_keys_to_skip as $key => $value) {
+				global $fb; $fb->info($key);
+					if(array_key_exists($key, $language_keys)) $language_skipped[$key] = $language_keys[$key];
+				}
+
+			}
+			return $language_skipped;
 		} else {
 			return false;
 		}
