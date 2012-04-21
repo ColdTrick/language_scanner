@@ -3,10 +3,14 @@
 	elgg_load_library('language_scanner:functions');
 
 	if($plugin_name = get_input('plugin_name')){
-		$plugin = elgg_get_plugin_from_id($plugin_name);
 		$language_scanner_result = language_scanner_scan_language($plugin_name);
 
-		$title = elgg_echo("language_scanner:result:title", array($plugin->getFriendlyName()));
+		if ($plugin_name == 'core') {
+			$title = elgg_echo("language_scanner:result:title", array('core'));
+		} else {
+			$plugin = elgg_get_plugin_from_id($plugin_name);
+			$title = elgg_echo("language_scanner:result:title", array($plugin->getFriendlyName()));
+		}
 
 		$body = elgg_echo("language_scanner:result:total_keys", array($language_scanner_result['start_count'])) . "<br />";
 		$body .= elgg_echo("language_scanner:result:unused_keys", array($language_scanner_result['end_count'])) . "<hr />";
@@ -32,7 +36,9 @@
 		}
 
 		echo elgg_view_module("inline", $title, $body);
+		
 	} elseif($plugins = elgg_get_plugins("all")) {
+	
 		$base_url = $vars["url"] . "admin/administer_utilities/language_scanner?plugin_name=";
 
 		$title = elgg_echo("language_scanner:admin:pick_plugin");
@@ -42,9 +48,13 @@
 			$body .= "<li>" . elgg_view("output/url", array("text" => $plugin->getFriendlyName(), "href" => $base_url . $plugin->getID())) . "</li>";
 		}
 
+		// adding core
+		$body .= "<li>" . elgg_view("output/url", array("text" => 'Core <i>!!! It takes time !</i>', "href" => $base_url . 'core')) . "</li>";
+		
 		$body .= "</ul>";
 
 		echo elgg_view_module("inline", $title, $body);
+		
 	} else {
 		echo elgg_echo("notfound");
 	}

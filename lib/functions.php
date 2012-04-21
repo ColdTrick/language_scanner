@@ -6,7 +6,6 @@
 
 		if($language_keys = language_scanner_get_language_keys_from_plugin($plugin_name)) {
 			$plugin_files = language_scanner_get_plugin_files($plugin_name);			
-	
 			$result['start_count'] = count($language_keys);
 			
 			// skip language key using for object's plugin
@@ -75,9 +74,20 @@
 	}
 
 	function language_scanner_get_plugin_files($plugin_name, $recursive = true) {
-		$directory = elgg_get_plugins_path() . $plugin_name;
-
-		return language_scanner_directory_listing($directory, $recursive);
+		switch($plugin_name) {
+			case 'core':
+				$directories = array('actions', 'engine', 'js', 'pages', 'views');
+				$files = array();
+				foreach($directories as $directory) {
+					$files = array_merge($files, language_scanner_directory_listing(elgg_get_root_path() . $directory, $recursive));
+				}
+				return $files;
+				break;
+			default:
+				$directory = elgg_get_plugins_path() . $plugin_name;
+				return language_scanner_directory_listing($directory, $recursive);
+				break;
+		}
 	}
 	
 	function language_scanner_directory_listing($directory, $recursive = true) {
@@ -109,23 +119,25 @@
 		$plugins_path = elgg_get_plugins_path();		
 		$plugin_path = $plugins_path . $plugin_name;
 
-		$language_file = $plugin_path . '/languages/en.php';
-
+		if($plugin_name == 'core') {
+			$language_file = elgg_get_root_path() . 'languages/en.php';
+		} else {
+			$language_file = $plugin_path . '/languages/en.php';
+		}
+		
 		if(file_exists($language_file)) {
 			if($contents = file_get_contents($language_file)) {
 				include($language_file);
 
 				$matches = language_scanner_check_variable_name($contents);
 
-				foreach($matches[0] as $match) {
-					if(!empty($match)) {
+				foreach($matches[0] as $match) { // @ManUtopiK: I don't understand this loop. Why ?
+					if(!empty($match) && $match != '$CONFIG') {
 						$language_variable_name = str_replace('$', '', $match);
 						$language_array_from_file = ${$language_variable_name};
-
 						$language_arrays = array_merge($language_arrays, $language_array_from_file);
 					}
 				}
-			
 				return $language_arrays;
 			} else {
 				return false;
@@ -140,7 +152,7 @@
 
 		$plugins_path = elgg_get_plugins_path();
 		$start_file = $plugins_path . $plugin_name . '/start.php';
-		
+
 		if($contents = file_get_contents($start_file)) {
 			preg_match_all('/elgg_register_entity_type\(([^;]*)\)/', $contents, $entities);
 			foreach($entities[1] as $entity) {
@@ -154,7 +166,6 @@
 				);
 
 				foreach($language_keys_to_skip as $key => $value) {
-				global $fb; $fb->info($key);
 					if(array_key_exists($key, $language_keys)) $language_skipped[$key] = $language_keys[$key];
 				}
 
