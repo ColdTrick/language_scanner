@@ -1,5 +1,8 @@
 <?php
 
+	// load library
+	elgg_load_library('language_scanner:functions');
+
 	if($plugin_name = get_input('plugin_name')){
 		$plugin = elgg_get_plugin_from_id($plugin_name);
 		$language_scanner_result = language_scanner_scan_language($plugin_name);
