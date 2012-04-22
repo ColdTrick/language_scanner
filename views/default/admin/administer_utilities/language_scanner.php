@@ -4,6 +4,7 @@
 
 	if($plugin_name = get_input('plugin_name')){
 		$language_scanner_result = language_scanner_scan_language($plugin_name);
+		$language_scanner_missing_key_result = language_scanner_scan_missing_key($plugin_name);
 
 		if ($plugin_name == 'core') {
 			$title = elgg_echo("language_scanner:result:title", array('core'));
@@ -12,24 +13,45 @@
 			$title = elgg_echo("language_scanner:result:title", array($plugin->getFriendlyName()));
 		}
 
-		$body = elgg_echo("language_scanner:result:total_keys", array($language_scanner_result['start_count'])) . "<br />";
-		$body .= elgg_echo("language_scanner:result:unused_keys", array($language_scanner_result['end_count'])) . "<hr />";
+		$body .= '<h3>' . elgg_echo("language_scanner:result:total_keys", array($language_scanner_result['start_count'])) . "</h3><hr/>";
 
 		if($language_scanner_result['unused']) {
-			$body .= '<ul>';
+			$body .= '<h4 class="mtm mbs">' . elgg_echo("language_scanner:result:unused_keys", array($language_scanner_result['end_count'])) . '</h4><ul>';
 			
 			foreach($language_scanner_result['unused'] as $key => $value) {
-				$body .= '<li>' . strip_tags($key) . '</li>';
+				$body .= '<li>' . strip_tags($key) . '&nbsp;<span class="elgg-subtext">' . $value .'</span></li>';
 			}
 			
 			$body .= '</ul>';
 		}
 		
 		if($language_scanner_result['skipped']) {
-			$body .= '<h3 class="mtm mbs">' . elgg_echo('language_scanner:result:skipped_keys') . '</h3><ul>';
+			$body .= '<h4 class="mtm mbs">' . elgg_echo('language_scanner:result:skipped_keys') . '</h4><ul>';
 			
 			foreach($language_scanner_result['skipped'] as $key => $value) {
-				$body .= '<li>' . strip_tags($key) . '</li>';
+				$body .= '<li>' . strip_tags($key) . '&nbsp;<span class="elgg-subtext">' . $value .'</span></li>';
+			}
+			
+			$body .= '</ul>';
+		}
+		
+		$body .= '<h3 class="mtm">' . elgg_echo("language_scanner:result:total_keys_in_files", array($language_scanner_missing_key_result['keys_in_code_found_count'] )) . "</h3><hr />";
+		
+		if($language_scanner_missing_key_result['missing_key']) {
+			$body .= '<h4 class="mtm mbs">' . elgg_echo('language_scanner:result:missing_keys', array(count($language_scanner_missing_key_result['missing_key']))) . '</h4><ul>';
+			
+			foreach($language_scanner_missing_key_result['missing_key'] as $key => $value) {
+				$body .= '<li>' . strip_tags($key) . '&nbsp;<span class="elgg-subtext">' . $value .'</span></li>';
+			}
+			
+			$body .= '</ul>';
+		}
+		
+		if($language_scanner_missing_key_result['missing_key_with_var']) {
+			$body .= '<h4 class="mtm mbs">' . elgg_echo('language_scanner:result:keys_with_var', array(count($language_scanner_missing_key_result['missing_key_with_var']))) . '</h4><ul>';
+			
+			foreach($language_scanner_missing_key_result['missing_key_with_var'] as $key => $value) {
+				$body .= '<li>' . strip_tags($key) . '&nbsp;<span class="elgg-subtext">' . $value .'</span></li>';
 			}
 			
 			$body .= '</ul>';
