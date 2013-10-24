@@ -5,11 +5,14 @@
 	<version>0.2</version>
 	<description>Scan language files for unused keys</description>
 	<website>http://www.coldtrick.com</website>
-	<copyright>ColdTrick 2011</copyright>
-	<license>GNU Public License version 2</license>
+	<repository>https://github.com/ColdTrick/language_scanner</repository>
+	<bugtracker>https://github.com/ColdTrick/language_scanner/issues</bugtracker>
+	<copyright>(C) ColdTrick IT Solutions 2011</copyright>
+	<license>GNU General Public License version 2</license>
+	
 	<requires>
-		<type>elgg_version</type>
-		<version>2010030101</version>
+		<type>elgg_release</type>
+		<version>1.8</version>
 	</requires>
 	
 	<category>ColdTrick</category>
