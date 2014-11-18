@@ -1,4 +1,5 @@
-= Version History =
+# Version History
+
 x.x:
 
 - fixed: new elgg_echo form not recognised

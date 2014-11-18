@@ -1,5 +1,5 @@
 <?php
-$language = array (
+return array (
   'language_scanner' => 'Vertalings scanner',
   'admin:language' => 'Vertalingen',
   'admin:language:scan' => 'Scan een plugin',
@@ -9,4 +9,3 @@ $language = array (
   'language_scanner:result:total_keys' => 'Totaal aantal keys: %d',
   'language_scanner:result:unused_keys' => 'Ongebruikte keys: %d',
 );
-add_translation("nl", $language);
