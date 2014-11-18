@@ -20,6 +20,9 @@ if ($plugin_name = get_input('plugin_name')) {
 	}
 
 	echo elgg_view_module("inline", $title, $body);
+	if (elgg_is_xhr()) {
+		exit();
+	}
 } elseif ($plugins = elgg_get_plugins("all")) {
 	$base_url = "admin/administer_utilities/language_scanner?plugin_name=";
 
@@ -27,7 +30,14 @@ if ($plugin_name = get_input('plugin_name')) {
 
 	$body = "<ul>";
 	foreach ($plugins as $plugin) {
-		$body .= "<li>" . elgg_view("output/url", array("text" => $plugin->getFriendlyName(), "href" => $base_url . $plugin->getID())) . "</li>";
+		$body .= "<li>";
+		$body .= elgg_view("output/url", array(
+			"text" => $plugin->getFriendlyName(), 
+			"href" => $base_url . $plugin->getID(),
+			"class" => "elgg-lightbox",
+			"data-colorbox-opts" => '{"width": 750, "maxHeight": "80%"}',
+		));
+		$body .= "</li>";
 	}
 
 	$body .= "</ul>";
