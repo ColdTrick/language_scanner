@@ -12,4 +12,3 @@ function language_scanner_init() {
 }
 
 elgg_register_event_handler("init", "system", "language_scanner_init");
-elgg_register_event_handler("pagesetup", "system", "language_scanner_pagesetup");
