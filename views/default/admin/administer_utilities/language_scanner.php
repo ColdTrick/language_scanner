@@ -21,7 +21,7 @@ if ($plugin_name = get_input('plugin_name')) {
 
 	echo elgg_view_module("inline", $title, $body);
 } elseif ($plugins = elgg_get_plugins("all")) {
-	$base_url = $vars["url"] . "admin/administer_utilities/language_scanner?plugin_name=";
+	$base_url = "admin/administer_utilities/language_scanner?plugin_name=";
 
 	$title = elgg_echo("language_scanner:admin:pick_plugin");
 
