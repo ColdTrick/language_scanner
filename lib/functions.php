@@ -15,43 +15,42 @@ function language_scanner_scan_language($plugin_name) {
 	$result = array();
 	$found_keys = array();
 
-	if($language_keys = language_scanner_get_language_keys_from_plugin($plugin_name)) {
+	if ($language_keys = language_scanner_get_language_keys_from_plugin($plugin_name)) {
 		$plugin_files = language_scanner_get_plugin_files($plugin_name);
 				
 		$result['start_count'] = count($language_keys);
 		
-		$i = 0;
-		foreach($plugin_files as $file) {
-			if($content = language_scanner_get_content_from_file($file)) {
-				foreach($language_keys as $key => $value) {
+		foreach ($plugin_files as $file) {
+			if ($content = language_scanner_get_content_from_file($file)) {
+				foreach ($language_keys as $key => $value) {
 					$found_key = false;
 					
-					if($key == $plugin_name) {
+					if ($key == $plugin_name) {
 						$found_key = true;
 					}
-					if(substr($key, 0, 6) == 'admin:') {
+					if (substr($key, 0, 6) == 'admin:') {
 						$found_key = true;
 					}
-					if(strpos($content, 'elgg_echo("' . $key . '"') !== false) {
+					if (strpos($content, 'elgg_echo("' . $key . '"') !== false) {
 						$found_key = true;
 					}
-					if(strpos($content, 'elgg_echo(\'' . $key . '\'') !== false) {
+					if (strpos($content, 'elgg_echo(\'' . $key . '\'') !== false) {
 						$found_key = true;
 					}
-					if(strpos($content, 'elgg.echo(\'' . $key . '\'') !== false) {
+					if (strpos($content, 'elgg.echo(\'' . $key . '\'') !== false) {
 						$found_key = true;
 					}
-					if(strpos($content, 'elgg.echo("' . $key . '"') !== false) {
+					if (strpos($content, 'elgg.echo("' . $key . '"') !== false) {
 						$found_key = true;
 					}
-					if(strpos($content, 'elgg.echo(\'' . $key . '\')') !== false) {
+					if (strpos($content, 'elgg.echo(\'' . $key . '\')') !== false) {
 						$found_key = true;
 					}
-					if(strpos($content, 'elgg.echo("' . $key . '")') !== false) {
+					if (strpos($content, 'elgg.echo("' . $key . '")') !== false) {
 						$found_key = true;
 					}
 					
-					if($found_key) {
+					if ($found_key) {
 						$found_keys[$key] = $value;
 						unset($language_keys[$key]);
 						continue;
@@ -80,12 +79,15 @@ function language_scanner_scan_language($plugin_name) {
  * @return string|boolean
  */
 function language_scanner_get_content_from_file($file) {
-	if(file_exists($file)) {
-		if($contents = file_get_contents($file)) {
-			return $contents;
-		}
+	if (!file_exists($file)) {
+		return false;
 	}
-
+	
+	$contents = file_get_contents($file);
+	if ($contents) {
+		return $contents;
+	}
+	
 	return false;
 }
 
@@ -117,18 +119,18 @@ function language_scanner_directory_listing($directory, $recursive = true) {
 	if ($handle = opendir($directory)) {
 		while (false !== ($file = readdir($handle))) {
 			if (!in_array($file, array('.', '..'))) {
-				if (is_dir($directory. '/' . $file))  {
-					if($recursive) {
-						$array_items = array_merge($array_items, language_scanner_directory_listing($directory. "/" . $file, $recursive));
+				if (is_dir($directory . '/' . $file)) {
+					if ($recursive) {
+						$array_items = array_merge($array_items, language_scanner_directory_listing($directory . "/" . $file, $recursive));
 					}
 				} else {
-					if(language_scanner_check_extension($file)) {
+					if (language_scanner_check_extension($file)) {
 						$file = $directory . '/' . $file;
 						$array_items[] = preg_replace("/\/\//si", "/", $file);
 					}
 				}
 			}
-	    }
+		}
 	}
 
 	return $array_items;
@@ -149,14 +151,14 @@ function language_scanner_get_language_keys_from_plugin($plugin_name) {
 
 	$language_file = $plugin_path . '/languages/en.php';
 
-	if(file_exists($language_file)) {
-		if($contents = file_get_contents($language_file)) {
+	if (file_exists($language_file)) {
+		if ($contents = file_get_contents($language_file)) {
 			include($language_file);
 
 			$matches = language_scanner_check_variable_name($contents);
 
-			foreach($matches[0] as $match) {
-				if(!empty($match)) {
+			foreach ($matches[0] as $match) {
+				if (!empty($match)) {
 					$language_variable_name = str_replace('$', '', $match);
 					$language_array_from_file = ${$language_variable_name};
 
@@ -197,7 +199,7 @@ function language_scanner_check_extension($file_name) {
 	$extension_array = explode('.', $file_name);
 	$extension = end($extension_array);
 
-	if(in_array($extension, array('php', 'html', 'js'))) {
+	if (in_array($extension, array('php', 'html', 'js'))) {
 		return true;
 	}
 

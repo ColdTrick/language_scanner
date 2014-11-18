@@ -9,10 +9,10 @@ if ($plugin_name = get_input('plugin_name')) {
 	$body = elgg_echo("language_scanner:result:total_keys", array($language_scanner_result['start_count'])) . "<br />";
 	$body .= elgg_echo("language_scanner:result:unused_keys", array($language_scanner_result['end_count'])) . "<hr />";
 
-	if($language_scanner_result['unused']) {
+	if (is_array($language_scanner_result['unused'])) {
 		$body .= '<ul>';
 		
-		foreach($language_scanner_result['unused'] as $key => $value) {
+		foreach ($language_scanner_result['unused'] as $key => $value) {
 			$body .= '<li>' . strip_tags($key) . '</li>';
 		}
 		
