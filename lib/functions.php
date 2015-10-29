@@ -5,10 +5,10 @@
  */
 
 /**
- * Function to scan a give plugin for unused language keys 
- * 
+ * Function to scan a give plugin for unused language keys
+ *
  * @param string $plugin_name plugin id
- * 
+ *
  * @return array
  */
 function language_scanner_scan_language($plugin_name) {
@@ -73,9 +73,9 @@ function language_scanner_scan_language($plugin_name) {
 
 /**
  * Loads file content
- * 
+ *
  * @param string $file filename
- * 
+ *
  * @return string|boolean
  */
 function language_scanner_get_content_from_file($file) {
@@ -93,10 +93,10 @@ function language_scanner_get_content_from_file($file) {
 
 /**
  * Returns array of all plugin files
- * 
+ *
  * @param string $plugin_name plugin id
  * @param string $recursive   boolean to flag if directory should be recursively traversed
- * 
+ *
  * @return array
  */
 function language_scanner_get_plugin_files($plugin_name, $recursive = true) {
@@ -107,10 +107,10 @@ function language_scanner_get_plugin_files($plugin_name, $recursive = true) {
 
 /**
  * Returns array of all the files in a given directory
- * 
+ *
  * @param string $directory directory location
  * @param string $recursive boolean to flag if directory should be recursively traversed
- * 
+ *
  * @return array
  */
 function language_scanner_directory_listing($directory, $recursive = true) {
@@ -138,22 +138,25 @@ function language_scanner_directory_listing($directory, $recursive = true) {
 
 /**
  * Returns array with all language keys from a language files
- * 
+ *
  * @param string $plugin_name plugin id
- * 
+ *
  * @return array|false
  */
 function language_scanner_get_language_keys_from_plugin($plugin_name) {
 	$language_arrays = array();
 
-	$plugins_path = elgg_get_plugins_path();		
+	$plugins_path = elgg_get_plugins_path();
 	$plugin_path = $plugins_path . $plugin_name;
 
 	$language_file = $plugin_path . '/languages/en.php';
 
 	if (file_exists($language_file)) {
 		if ($contents = file_get_contents($language_file)) {
-			include($language_file);
+			$ln = include($language_file);
+			if (is_array($ln)) {
+				$language_arrays = $ln;
+			}
 
 			$matches = language_scanner_check_variable_name($contents);
 
@@ -177,9 +180,9 @@ function language_scanner_get_language_keys_from_plugin($plugin_name) {
 
 /**
  * Checks variable name
- * 
+ *
  * @param string $string string
- * 
+ *
  * @return array
  */
 function language_scanner_check_variable_name($string) {
@@ -190,9 +193,9 @@ function language_scanner_check_variable_name($string) {
 
 /**
  * Validates usable extensions of file
- * 
+ *
  * @param string $file_name file name
- * 
+ *
  * @return boolean
  */
 function language_scanner_check_extension($file_name) {
