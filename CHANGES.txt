@@ -1,8 +1,15 @@
 Version History
 ===============
 
-x.x:
+1.0 (2016-02-12):
 
+- added: js elgg.echo support
+- added: missing translations and core replacement suggestion in report
+- added: dutch translation
+- added: function docs
+- added: lightbox view of scan results
+- fixed: new elgg_echo form not recognised
+- fixed: now also works with elgg 1.9+ language files
 - fixed: new elgg_echo form not recognised
 
 0.3 (2012-01-25)
