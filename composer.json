@@ -1,0 +1,17 @@
+{
+	"name": "coldtrick/language_scanner",
+	"description": "Scan a plugin for the following information",
+	"type": "elgg-plugin",
+	"keywords": ["elgg", "plugin", "i18n"],
+	"license": "GPL-2.0",
+	"support": {
+		"source": "https://github.com/ColdTrick/language_scanner",
+		"issues": "https://github.com/ColdTrick/language_scanner/issues"
+	},
+	"require": {
+		"composer/installers": "^1.0.8"
+	},
+	"require-dev": {
+		"coldtrick/sniffs": "dev-master"
+	}
+}
