@@ -1,6 +1,8 @@
 Language scanner
 ================
 
+[![Build Status](https://scrutinizer-ci.com/g/ColdTrick/language_scanner/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ColdTrick/language_scanner/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ColdTrick/language_scanner/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ColdTrick/language_scanner/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/coldtrick/language_scanner/v/stable.svg)](https://packagist.org/packages/coldtrick/language_scanner)
 [![License](https://poser.pugx.org/coldtrick/language_scanner/license.svg)](https://packagist.org/packages/coldtrick/language_scanner)
 
