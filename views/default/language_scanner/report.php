@@ -18,5 +18,6 @@ $body = elgg_echo('language_scanner:result:total_keys', [$plugin_report->getTota
 $body .= elgg_view('language_scanner/report/unused_translations', ['plugin_report' => $plugin_report]);
 $body .= elgg_view('language_scanner/report/missing_translations', ['plugin_report' => $plugin_report]);
 $body .= elgg_view('language_scanner/report/core_suggestions', ['plugin_report' => $plugin_report]);
+$body .= elgg_view('language_scanner/report/system_messages', ['plugin_report' => $plugin_report]);
 
 echo elgg_view_module('inline', $title, $body);

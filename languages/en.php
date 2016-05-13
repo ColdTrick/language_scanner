@@ -16,6 +16,7 @@ return array(
 	'language_scanner:result:code_keys' => "Unique language keys used in plugin code: %d",
 	'language_scanner:result:code_keys:untranslatable' => "Unique language keys that are untranslatable: %d",
 
+	'language_scanner:result:system_messages:title' => "Untranslatable System Messages",
 	'language_scanner:result:missing_translations:title' => "Missing Translations",
 	'language_scanner:result:unused_translations:title' => "Unused Translations",
 	'language_scanner:result:core_suggestions:title' => "Core Suggestions",

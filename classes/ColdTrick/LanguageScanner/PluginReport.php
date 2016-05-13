@@ -15,6 +15,8 @@ class PluginReport {
 	
 	private $unused_language_keys = []; // language keys from the language file that appear not to be used in the plugins code
 	
+	private $system_messages = []; // language keys from plugin files that appear not to be translated
+	
 	private $code_language_keys = [];
 	
 	public function __construct($plugin_guid) {
@@ -47,6 +49,11 @@ class PluginReport {
 	public function getCodeLanguageKeys() {
 		return $this->code_language_keys;
 	}
+	
+	public function getUntranslatableSystemMessages() {
+		return $this->system_messages;
+	}
+	
 	public function getUntranslatableCodeLanguageKeys() {
 		$result = [];
 		foreach ($this->getCodeLanguageKeys() as $key) {
@@ -117,16 +124,33 @@ class PluginReport {
 				continue;
 			}
 			
+			// elgg_echo's
 			$pattern = "/elgg[_.]echo\(\\\{0,1}['\"]([a-z :\-_0-9]+(?<!:))\\\{0,1}['\"]/i";
 			preg_match_all($pattern, $contents, $matches);
-			if (empty($matches)) {
-				continue;
+			if (!empty($matches)) {
+				$keys = elgg_extract(1, $matches);
+				$this->code_language_keys = array_merge($this->code_language_keys, $keys);
 			}
-			$keys = elgg_extract(1, $matches);
-			$this->code_language_keys = array_merge($this->code_language_keys, $keys);
+			
+			// system_messages
+			$pattern = "/system[_.]message\(\\\{0,1}['\"]([a-z :\-_0-9]+(?<!:))\\\{0,1}['\"]/i";
+			preg_match_all($pattern, $contents, $matches);
+			if (!empty($matches)) {
+				$keys = elgg_extract(1, $matches);
+				$this->system_messages = array_merge($this->system_messages, $keys);
+			}
+			
+			// register_error
+			$pattern = "/register[_.]error\(\\\{0,1}['\"]([a-z :\-_0-9]+(?<!:))\\\{0,1}['\"]/i";
+			preg_match_all($pattern, $contents, $matches);
+			if (!empty($matches)) {
+				$keys = elgg_extract(1, $matches);
+				$this->system_messages = array_merge($this->system_messages, $keys);
+			}
 		}
 		
 		$this->code_language_keys = array_unique($this->code_language_keys);
+		$this->system_messages = array_unique($this->system_messages);
 	}
 	
 	/**
