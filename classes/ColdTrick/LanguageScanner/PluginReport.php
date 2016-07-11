@@ -125,7 +125,7 @@ class PluginReport {
 			}
 			
 			// elgg_echo's
-			$pattern = "/elgg[_.]echo\(\\\{0,1}['\"]([a-z :\-_0-9]+(?<!:))\\\{0,1}['\"]/i";
+			$pattern = "/elgg[_.]echo\(\\\{0,1}['\"]([^'\"\$]+(?<!:))\\\{0,1}['\"]/i";
 			preg_match_all($pattern, $contents, $matches);
 			if (!empty($matches)) {
 				$keys = elgg_extract(1, $matches);
@@ -133,7 +133,7 @@ class PluginReport {
 			}
 			
 			// system_messages
-			$pattern = "/system[_.]message\(\\\{0,1}['\"]([a-z :\-_0-9]+(?<!:))\\\{0,1}['\"]/i";
+			$pattern = "/system[_.]message\(\\\{0,1}['\"]([^'\"\$]+(?<!:))\\\{0,1}['\"]/i";
 			preg_match_all($pattern, $contents, $matches);
 			if (!empty($matches)) {
 				$keys = elgg_extract(1, $matches);
@@ -141,7 +141,7 @@ class PluginReport {
 			}
 			
 			// register_error
-			$pattern = "/register[_.]error\(\\\{0,1}['\"]([a-z :\-_0-9]+(?<!:))\\\{0,1}['\"]/i";
+			$pattern = "/register[_.]error\(\\\{0,1}['\"]([^'\"\$]+(?<!:))\\\{0,1}['\"]/i";
 			preg_match_all($pattern, $contents, $matches);
 			if (!empty($matches)) {
 				$keys = elgg_extract(1, $matches);
