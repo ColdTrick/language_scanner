@@ -99,7 +99,10 @@ class PluginReport {
 	private function loadAllPluginTranslations() {
 		$plugins = elgg_get_plugins('all');
 		foreach ($plugins as $plugin) {
-			register_translations(elgg_get_plugins_path() . $plugin->getID() . '/languages');
+			$path = elgg_get_plugins_path() . $plugin->getID() . '/languages';
+			if (is_dir($path)) {
+				register_translations($path);
+			}
 		}
 	}
 	
