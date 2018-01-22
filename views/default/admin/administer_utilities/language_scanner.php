@@ -7,7 +7,7 @@ $plugins = elgg_get_plugins('all');
 
 $ordered_plugins = [];
 foreach ($plugins as $plugin) {
-	$friendly_name = $plugin->getFriendlyName();
+	$friendly_name = $plugin->getDisplayName();
 	$ordered_plugins[$friendly_name] = elgg_format_element('li', [], elgg_view('output/url', [
 		'text' => $friendly_name,
 		'href' => "ajax/view/language_scanner/report?plugin_name={$plugin->getID()}",

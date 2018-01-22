@@ -10,7 +10,7 @@ if (empty($plugin)) {
 	return;
 }
 
-$title = elgg_echo('language_scanner:result:title', [$plugin->getFriendlyName()]);
+$title = elgg_echo('language_scanner:result:title', [$plugin->getDisplayName()]);
 
 $plugin_report = new \ColdTrick\LanguageScanner\PluginReport($plugin->getGUID());
 
