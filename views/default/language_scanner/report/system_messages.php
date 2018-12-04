@@ -28,4 +28,4 @@ foreach ($system_messages as $value) {
 
 $body .= elgg_format_element('ul', ['class' => 'mts'], $list_items);
 
-echo elgg_view_module('inline', elgg_echo('language_scanner:result:system_messages:title'), $body);
+echo elgg_view_module('info', elgg_echo('language_scanner:result:system_messages:title'), $body);

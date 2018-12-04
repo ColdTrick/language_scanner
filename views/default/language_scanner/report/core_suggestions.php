@@ -21,4 +21,4 @@ if (!empty($suggestions)) {
 
 $body = elgg_format_element('ul', ['class' => 'mts'], $list_items);
 
-echo elgg_view_module('inline', elgg_echo('language_scanner:result:core_suggestions:title'), $body);
+echo elgg_view_module('info', elgg_echo('language_scanner:result:core_suggestions:title'), $body);
