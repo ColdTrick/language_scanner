@@ -206,6 +206,25 @@ class PluginReport {
 				break;
 			}
 		}
+		
+		// strip allowed keys
+		$this->unused_language_keys = array_filter($this->unused_language_keys, function($key) {
+			
+			$patterns = [
+				'^(item|collection):object:(\w*)',
+				'^entity:delete:(\w*)',
+				'^widgets:(\w*):(name|description)$',
+			];
+			
+			$patterns = implode('|', $patterns);
+			
+			if (preg_match("/{$patterns}/", $key)){
+				return false;
+			}
+			
+			
+			return true;
+		}, ARRAY_FILTER_USE_KEY);
 	}
 	
 	/**
