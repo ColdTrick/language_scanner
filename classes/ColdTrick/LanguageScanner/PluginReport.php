@@ -101,7 +101,7 @@ class PluginReport {
 		foreach ($plugins as $plugin) {
 			$path = elgg_get_plugins_path() . $plugin->getID() . '/languages';
 			if (is_dir($path)) {
-				register_translations($path);
+				elgg()->translator->registerTranslations($path);
 			}
 		}
 	}
@@ -240,11 +240,11 @@ class PluginReport {
 		
 		$files = [];
 		
-		$base_path = sanitise_filepath(elgg_get_plugins_path() . $this->plugin->getID());
+		$base_path = \Elgg\Project\Paths::sanitize(elgg_get_plugins_path() . $this->plugin->getID());
 		$directory = new \RecursiveDirectoryIterator($base_path, \RecursiveDirectoryIterator::SKIP_DOTS);
 		$iterator = new \RecursiveIteratorIterator($directory);
 		foreach ($iterator as $file) {
-			$file_folder = sanitise_filepath($file->getPath());
+			$file_folder = \Elgg\Project\Paths::sanitize($file->getPath());
 			$file_folder = str_replace($base_path, '', $file_folder);
 			foreach ($skip_folders as $skip) {
 				if (strpos($file_folder, $skip) === 0) {
