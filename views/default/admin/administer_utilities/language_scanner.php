@@ -1,26 +1,36 @@
 <?php
 
-elgg_load_js('lightbox');
-elgg_load_css('lightbox');
-
 $plugins = elgg_get_plugins('all');
 
 $ordered_plugins = [];
 foreach ($plugins as $plugin) {
-	$friendly_name = $plugin->getDisplayName();
-	$ordered_plugins[$friendly_name] = elgg_format_element('li', [], elgg_view('output/url', [
-		'text' => $friendly_name,
-		'href' => "ajax/view/language_scanner/report?plugin_name={$plugin->getID()}",
+	
+	$output = elgg_view('output/url', [
+		'icon' => 'eye',
+		'text' => $plugin->getDisplayName(),
+		'href' => elgg_http_add_url_query_elements('ajax/view/language_scanner/report', [
+			'plugin_name' => $plugin->getID(),
+		]),
 		'class' => 'elgg-lightbox',
 		'data-colorbox-opts' => json_encode([
 			'width' => 750,
 			'maxHeight' => '80%',
 		]),
-	]));
+	]);
+	
+	$manifest = $plugin->getManifest();
+	if (!empty($manifest)) {
+		$description = $manifest->getDescription();
+		if (!empty($description)) {
+			$output .= elgg_format_element('span', ['class' => ['elgg-subtext', 'mlm']], $description);
+		}
+	}
+	
+	$ordered_plugins[$plugin->getDisplayName()] = elgg_format_element('li', [], $output);
 }
 
 uksort($ordered_plugins, 'strcasecmp');
 
-$body = elgg_format_element('ul', [], implode('', $ordered_plugins));
+$body = elgg_format_element('ul', [], implode(PHP_EOL, $ordered_plugins));
 
 echo elgg_view_module('inline', elgg_echo('language_scanner:admin:pick_plugin'), $body);
