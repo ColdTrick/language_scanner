@@ -214,6 +214,7 @@ class PluginReport {
 				'^(item|collection):object:(\w*)',
 				'^entity:delete:(\w*)',
 				'^widgets:(\w*):(name|description)$',
+				"^{$this->plugin->getId()}:upgrade:(\d+):(title|description)$",
 			];
 			
 			$patterns = implode('|', $patterns);
