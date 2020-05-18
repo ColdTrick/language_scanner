@@ -1,6 +1,13 @@
 Version history
 ===============
 
+1.2 (2020-05-18):
+
+- added: global filter for unused keys
+- added: key exception for upgrades
+- fixed: only load translation path if languages folder exists
+- fixed: replaced deprecated getFriendlyName() with getDisplayName()
+
 1.1 (2016-09-01):
 
 - added: info about untranslatable register_errors and system_messages
