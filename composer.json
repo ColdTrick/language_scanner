@@ -3,7 +3,7 @@
 	"description": "Scan a plugin for the following information",
 	"type": "elgg-plugin",
 	"keywords": ["elgg", "plugin", "i18n"],
-	"license": "GPL-2.0",
+	"license": "GPL-2.0-only",
 	"support": {
 		"source": "https://github.com/ColdTrick/language_scanner",
 		"issues": "https://github.com/ColdTrick/language_scanner/issues"
@@ -14,5 +14,7 @@
 	"require-dev": {
 		"coldtrick/sniffs": "dev-master",
 		"coldtrick/releases": "dev-master"
+	},"conflict": {
+		"elgg/elgg": "<3.3"
 	}
 }
