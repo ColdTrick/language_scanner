@@ -1,5 +1,19 @@
 <?php
+/**
+ * This file was created by Translation Editor v7.0.4
+ * On 2020-05-18 12:15
+ */
+
 return array (
+  'language_scanner:result:show_more' => '... toon meer',
+  'language_scanner:result:code_keys' => 'Unieke vertaalsleutels gebruikt in plugin code: %d',
+  'language_scanner:result:code_keys:untranslatable' => 'Unieke vertaalsleutels welke niet zijn vertaald: %d',
+  'language_scanner:result:system_messages:title' => 'Niet te vertalen systeem berichten',
+  'language_scanner:result:missing_translations:title' => 'Ontbrekende vertalingen',
+  'language_scanner:result:unused_translations:title' => 'Ongebruikte vertalingen',
+  'language_scanner:result:core_suggestions:title' => 'Core suggesties',
+  'language_scanner:result:core_suggestions:suggestion' => 'Gebruik %s voor %s',
+  'language_scanner:result:core_suggestions:no_suggestion' => 'Geen suggesties gevonden',
   'language_scanner' => 'Vertalings scanner',
   'admin:language' => 'Vertalingen',
   'admin:language:scan' => 'Scan een plugin',
