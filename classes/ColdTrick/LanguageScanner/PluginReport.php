@@ -128,8 +128,9 @@ class PluginReport {
 			}
 			
 			// elgg_echo's
-			$pattern = "/elgg[_.]echo\(\\\{0,1}['\"]([^'\"\$]+(?<!:))\\\{0,1}['\"]/i";
+			$pattern = "/(?>->echo|->translate|elgg[_.]echo)\(\\\{0,1}['\"]([^'\"\$]+(?<!:))\\\{0,1}['\"]/i";
 			preg_match_all($pattern, $contents, $matches);
+			
 			if (!empty($matches)) {
 				$keys = elgg_extract(1, $matches);
 				$this->code_language_keys = array_merge($this->code_language_keys, $keys);
@@ -195,7 +196,7 @@ class PluginReport {
 					continue;
 				}
 				
-				$pattern = "/elgg[_.]echo\(\\\{0,1}['\"]{$key}\\\{0,1}['\"]/i";
+				$pattern = "/(?>->echo|->translate|elgg[_.]echo)\(\\\{0,1}['\"]{$key}\\\{0,1}['\"]/i";
 				
 				if (preg_match($pattern, $contents)) {
 					unset($this->unused_language_keys[$key]);
@@ -236,7 +237,7 @@ class PluginReport {
 	 * @return \SplFileInfo[]
 	 */
 	private function getPluginFiles($valid_extensions = ['php', 'html', 'js']) {
-		$skip_folders = ['.git', 'vendor', 'vendors', '.svn'];
+		$skip_folders = ['.git', 'vendor', 'vendors', '.svn', 'tests', 'languages'];
 		
 		$files = [];
 		

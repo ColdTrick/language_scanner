@@ -18,12 +18,9 @@ foreach ($plugins as $plugin) {
 		]),
 	]);
 	
-	$manifest = $plugin->getManifest();
-	if (!empty($manifest)) {
-		$description = $manifest->getDescription();
-		if (!empty($description)) {
-			$output .= elgg_format_element('span', ['class' => ['elgg-subtext', 'mlm']], $description);
-		}
+	$description = $plugin->getDescription();
+	if (!empty($description)) {
+		$output .= elgg_format_element('span', ['class' => ['elgg-subtext', 'mlm']], $description);
 	}
 	
 	$ordered_plugins[$plugin->getDisplayName()] = elgg_format_element('li', [], $output);
