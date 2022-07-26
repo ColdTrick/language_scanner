@@ -13,9 +13,14 @@
 		"composer/installers": "^1.0.8"
 	},
 	"require-dev": {
-		"coldtrick/sniffs": "dev-master",
-		"coldtrick/releases": "dev-master"
-	},"conflict": {
-		"elgg/elgg": "<4.0"
+		"coldtrick/sniffs": "dev-master"
+	},
+	"conflict": {
+		"elgg/elgg": "<4.2"
+	},
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true
+		}
 	}
 }

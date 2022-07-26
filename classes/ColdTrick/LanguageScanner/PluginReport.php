@@ -128,7 +128,7 @@ class PluginReport {
 			}
 			
 			// elgg_echo's
-			$pattern = "/(?>->echo|->translate|elgg[_.]echo)\(\\\{0,1}['\"]([^'\"\$]+(?<!:))\\\{0,1}['\"]/i";
+			$pattern = "/(?>->translate|elgg_echo|\.echo)\(\\\{0,1}['\"]([^'\"\$]+(?<!:))\\\{0,1}['\"]/i";
 			preg_match_all($pattern, $contents, $matches);
 			
 			if (!empty($matches)) {
@@ -136,16 +136,16 @@ class PluginReport {
 				$this->code_language_keys = array_merge($this->code_language_keys, $keys);
 			}
 			
-			// system_messages
-			$pattern = "/system[_.]message\(\\\{0,1}['\"]([^'\"\$]+(?<!:))\\\{0,1}['\"]/i";
+			// elgg_register_success_message
+			$pattern = "/elgg_register_success_message\(\\\{0,1}['\"]([^'\"\$]+(?<!:))\\\{0,1}['\"]/i";
 			preg_match_all($pattern, $contents, $matches);
 			if (!empty($matches)) {
 				$keys = elgg_extract(1, $matches);
 				$this->system_messages = array_merge($this->system_messages, $keys);
 			}
 			
-			// register_error
-			$pattern = "/register[_.]error\(\\\{0,1}['\"]([^'\"\$]+(?<!:))\\\{0,1}['\"]/i";
+			// elgg_register_error_message
+			$pattern = "/elgg_register_error_message\(\\\{0,1}['\"]([^'\"\$]+(?<!:))\\\{0,1}['\"]/i";
 			preg_match_all($pattern, $contents, $matches);
 			if (!empty($matches)) {
 				$keys = elgg_extract(1, $matches);
@@ -196,7 +196,7 @@ class PluginReport {
 					continue;
 				}
 				
-				$pattern = "/(?>->echo|->translate|elgg[_.]echo)\(\\\{0,1}['\"]{$key}\\\{0,1}['\"]/i";
+				$pattern = "/(?>->translate|elgg_echo|\.echo)\(\\\{0,1}['\"]{$key}\\\{0,1}['\"]/i";
 				
 				if (preg_match($pattern, $contents)) {
 					unset($this->unused_language_keys[$key]);
