@@ -305,7 +305,7 @@ class PluginReport {
 		unset($this->plugin_language_keys['']);
 		
 		// always add them, as we can also scan disabled plugins
-		add_translation('en', $this->plugin_language_keys);
+		elgg()->translator->addTranslation('en', $this->plugin_language_keys);
 	}
 	
 	/**
