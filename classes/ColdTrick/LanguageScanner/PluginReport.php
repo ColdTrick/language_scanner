@@ -2,28 +2,37 @@
 
 namespace ColdTrick\LanguageScanner;
 
+use Elgg\Exceptions\InvalidArgumentException;
+use Elgg\Project\Paths;
+use FilesystemIterator;
+
 /**
  * PluginReport
  */
 class PluginReport {
 	
-	private $plugin;
+	protected \ElggPlugin $plugin;
 	
-	private $plugin_language_keys = []; // keys in the en language file of the plugin
+	protected array $plugin_language_keys = []; // keys in the en language file of the plugin
 
-	private $plugin_files = []; // plugin files that hold potential elgg_echo's
+	protected array $plugin_files = []; // plugin files that hold potential elgg_echo's
 	
-	private $unused_language_keys = []; // language keys from the language file that appear not to be used in the plugins code
+	protected array $unused_language_keys = []; // language keys from the language file that appear not to be used in the plugins code
 	
-	private $system_messages = []; // language keys from plugin files that appear not to be translated
+	protected array $system_messages = []; // language keys from plugin files that appear not to be translated
 	
-	private $code_language_keys = [];
+	protected array $code_language_keys = [];
 	
-	public function __construct($plugin_guid) {
+	/**
+	 * Create a new report
+	 *
+	 * @param \ElggPlugin $plugin the plugin to create a report for
+	 */
+	public function __construct(\ElggPlugin $plugin) {
 		
 		$this->loadAllPluginTranslations();
 		
-		$this->plugin = get_entity($plugin_guid);
+		$this->plugin = $plugin;
 		
 		$this->loadPluginLanguageKeys();
 		
@@ -34,48 +43,87 @@ class PluginReport {
 		$this->scanCodeForKeys();
 	}
 	
-	public function getTotalKeyCount() {
+	/**
+	 * Get the total number of translation keys
+	 *
+	 * @return int
+	 */
+	public function getTotalKeyCount(): int {
 		return count($this->plugin_language_keys);
 	}
 	
-	public function getUnusedKeyCount() {
+	/**
+	 * Get the total number of unused translation keys
+	 *
+	 * @return int
+	 */
+	public function getUnusedKeyCount(): int {
 		return count($this->unused_language_keys);
 	}
 	
-	public function getUnusedKeys() {
+	/**
+	 * Get the unused translation keys
+	 *
+	 * @return array
+	 */
+	public function getUnusedKeys(): array {
 		return $this->unused_language_keys;
 	}
 	
-	public function getCodeLanguageKeys() {
+	/**
+	 * Get the language keys used in the code
+	 *
+	 * @return array
+	 */
+	public function getCodeLanguageKeys(): array {
 		return $this->code_language_keys;
 	}
 	
-	public function getUntranslatableSystemMessages() {
+	/**
+	 * Get the system messages which are untranslatable
+	 *
+	 * @return array
+	 */
+	public function getUntranslatableSystemMessages(): array {
 		return $this->system_messages;
 	}
 	
-	public function getUntranslatableCodeLanguageKeys() {
+	/**
+	 * Get the language keys which aren't present in a language file
+	 *
+	 * @return array
+	 */
+	public function getUntranslatableCodeLanguageKeys(): array {
 		$result = [];
 		foreach ($this->getCodeLanguageKeys() as $key) {
 			if (!elgg_language_key_exists($key)) {
 				$result[] = $key;
 			}
 		}
+		
 		return $result;
 	}
-	public function countCodeLanguageKeys() {
+	
+	/**
+	 * Get the count of the language keys used in the code
+	 *
+	 * @return int
+	 */
+	public function countCodeLanguageKeys(): int {
 		return count($this->code_language_keys);
 	}
 	
 	/**
 	 * Returns array of suggestions of plugin keys that could probably be replaced with core keys
+	 *
+	 * @return array
 	 */
-	public function getSuggestions() {
+	public function getSuggestions(): array {
 		$suggestions = [];
 		$plugin_translations = $this->plugin_language_keys;
 		$plugin_translations = array_map('strtolower', $plugin_translations);
 		
-		$core_translations = include(elgg_get_root_path() . 'languages/en.php');
+		$core_translations = include(Paths::elgg() . 'languages/en.php');
 		$core_translations = array_map('strtolower', $core_translations);
 		
 		foreach ($plugin_translations as $plugin_key => $plugin_value) {
@@ -85,9 +133,9 @@ class PluginReport {
 					$suggestions[$plugin_key] = $core_key;
 					break;
 				}
-				
 			}
 		}
+		
 		return $suggestions;
 	}
 	
@@ -96,7 +144,7 @@ class PluginReport {
 	 *
 	 * @return void
 	 */
-	private function loadAllPluginTranslations() {
+	protected function loadAllPluginTranslations(): void {
 		$plugins = elgg_get_plugins('all');
 		foreach ($plugins as $plugin) {
 			$path = elgg_get_plugins_path() . $plugin->getID() . '/languages';
@@ -111,7 +159,7 @@ class PluginReport {
 	 *
 	 * @return void
 	 */
-	private function scanCodeForKeys() {
+	protected function scanCodeForKeys(): void {
 		if (empty($this->plugin_files)) {
 			return;
 		}
@@ -162,7 +210,7 @@ class PluginReport {
 	 *
 	 * @return void
 	 */
-	private function scanForUnusedKeys() {
+	protected function scanForUnusedKeys(): void {
 		if (empty($this->plugin_files)) {
 			return;
 		}
@@ -173,31 +221,28 @@ class PluginReport {
 		
 		$this->unused_language_keys = $this->plugin_language_keys;
 		
-		
 		foreach ($this->plugin_files as $file) {
-			
 			if (!file_exists($file)) {
 				continue;
 			}
 			
 			$contents = file_get_contents($file);
-			
 			if (empty($contents)) {
 				continue;
 			}
 			
 			foreach ($this->unused_language_keys as $key => $value) {
-				if ($key == $this->plugin->getID()) {
+				if ($key === $this->plugin->getID()) {
 					unset($this->unused_language_keys[$key]);
 					continue;
 				}
+				
 				if (substr($key, 0, 6) == 'admin:') {
 					unset($this->unused_language_keys[$key]);
 					continue;
 				}
 				
 				$pattern = "/(?>->translate|elgg_echo|\.echo)\(\\\{0,1}['\"]{$key}\\\{0,1}['\"]/i";
-				
 				if (preg_match($pattern, $contents)) {
 					unset($this->unused_language_keys[$key]);
 				}
@@ -210,7 +255,6 @@ class PluginReport {
 		
 		// strip allowed keys
 		$this->unused_language_keys = array_filter($this->unused_language_keys, function($key) {
-			
 			$patterns = [
 				'^(item|collection):object:(\w*)',
 				'^entity:delete:(\w*)',
@@ -219,11 +263,9 @@ class PluginReport {
 			];
 			
 			$patterns = implode('|', $patterns);
-			
-			if (preg_match("/{$patterns}/", $key)){
+			if (preg_match("/{$patterns}/", $key)) {
 				return false;
 			}
-			
 			
 			return true;
 		}, ARRAY_FILTER_USE_KEY);
@@ -236,19 +278,19 @@ class PluginReport {
 	 *
 	 * @return \SplFileInfo[]
 	 */
-	private function getPluginFiles($valid_extensions = ['php', 'html', 'js']) {
+	protected function getPluginFiles(array $valid_extensions = ['php', 'html', 'js']): array {
 		$skip_folders = ['.git', 'vendor', 'vendors', '.svn', 'tests', 'languages'];
 		
 		$files = [];
 		
 		$base_path = \Elgg\Project\Paths::sanitize(elgg_get_plugins_path() . $this->plugin->getID());
-		$directory = new \RecursiveDirectoryIterator($base_path, \RecursiveDirectoryIterator::SKIP_DOTS);
+		$directory = new \RecursiveDirectoryIterator($base_path, \FilesystemIterator::SKIP_DOTS);
 		$iterator = new \RecursiveIteratorIterator($directory);
 		foreach ($iterator as $file) {
 			$file_folder = \Elgg\Project\Paths::sanitize($file->getPath());
 			$file_folder = str_replace($base_path, '', $file_folder);
 			foreach ($skip_folders as $skip) {
-				if (strpos($file_folder, $skip) === 0) {
+				if (str_starts_with($file_folder, $skip)) {
 					continue(2);
 				}
 			}
@@ -266,13 +308,10 @@ class PluginReport {
 	/**
 	 * Returns array with all language keys from a language files
 	 *
-	 * @param string $plugin_name plugin id
-	 *
-	 * @return array|false
+	 * @return void
 	 */
-	private function loadPluginLanguageKeys() {
+	protected function loadPluginLanguageKeys(): void {
 		$language_file = elgg_get_plugins_path() . $this->plugin->getID() . '/languages/en.php';
-
 		if (!file_exists($language_file)) {
 			return;
 		}
@@ -283,41 +322,17 @@ class PluginReport {
 		}
 		
 		$ln = include($language_file);
-		if (is_array($ln)) {
-			// language files using return array() formatting
-			$this->plugin_language_keys = $ln;
-		} else {
-			// language files using add_translation formatting
-			
-			$matches = $this->matchLanguageKeys($contents);
-	
-			foreach ($matches[0] as $match) {
-				if (empty($match)) {
-					continue;
-				}
-				
-				$language_variable_name = str_replace('$', '', $match);
-				$this->plugin_language_keys = ${$language_variable_name};
-			}
+		if (!is_array($ln)) {
+			return;
 		}
+		
+		// language files using return array() formatting
+		$this->plugin_language_keys = $ln;
 		
 		// remove optional blank
 		unset($this->plugin_language_keys['']);
 		
 		// always add them, as we can also scan disabled plugins
 		elgg()->translator->addTranslation('en', $this->plugin_language_keys);
-	}
-	
-	/**
-	 * Checks variable name
-	 *
-	 * @param string $string string
-	 *
-	 * @return array
-	 */
-	private function matchLanguageKeys($string) {
-		preg_match_all('(\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)', $string, $matches);
-
-		return $matches;
 	}
 }

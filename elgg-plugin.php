@@ -1,17 +1,19 @@
 <?php
 
-use ColdTrick\LanguageScanner\Bootstrap;
-
 return [
 	'plugin' => [
 		'version' => '4.0',
 	],
-	'bootstrap' => Bootstrap::class,
-	'hooks' => [
+	'events' => [
 		'register' => [
-			'menu:page' => [
-				'ColdTrick\LanguageScanner\PageMenu::registerAdmin' => [],
+			'menu:admin_header' => [
+				'ColdTrick\LanguageScanner\Menus\AdminHeader::register' => [],
 			],
+		],
+	],
+	'view_options' => [
+		'language_scanner/report' => [
+			'ajax' => true,
 		],
 	],
 ];

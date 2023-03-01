@@ -1,15 +1,20 @@
 <?php
+/**
+ * Suggest replacing plugin translations with core translations
+ */
+
+use ColdTrick\LanguageScanner\PluginReport;
 
 $plugin_report = elgg_extract('plugin_report', $vars);
-
-// suggestions for replacing plugin translations with core translations
+if (!$plugin_report instanceof PluginReport) {
+	return;
+}
 
 $suggestions = $plugin_report->getSuggestions();
 
 $list_items = '';
 if (!empty($suggestions)) {
 	foreach ($suggestions as $original_key => $suggested_key) {
-		
 		$suggestion = elgg_format_element('i', [], $suggested_key . ' [' . elgg_echo($suggested_key) . ']');
 		$original = elgg_format_element('i', [], $original_key . ' [' . elgg_echo($original_key) . ']');
 	

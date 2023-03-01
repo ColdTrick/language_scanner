@@ -1,27 +1,34 @@
 <?php
+/**
+ * Show a list of language keys which are present in the language file but not used in the code
+ */
 
-// translations found in the language file of the plugins, but not used in the code
+use ColdTrick\LanguageScanner\PluginReport;
 
 $plugin_report = elgg_extract('plugin_report', $vars);
+if (!$plugin_report instanceof PluginReport) {
+	return;
+}
 
 $body = elgg_echo('language_scanner:result:unused_keys', [$plugin_report->getUnusedKeyCount()]);
 
 $unused = $plugin_report->getUnusedKeys();
-if ($unused) {
+if (!empty($unused)) {
 	$list_items = '';
 	
 	$list_options = [];
 	$i = 0;
 	foreach ($unused as $key => $value) {
 		$i++;
-		if ($i == 5) {
+		if ($i === 5) {
 			$list_options['class'] = 'hidden';
 			$list_items .= elgg_format_element('li', [], elgg_view('output/url', [
 				'text' => elgg_echo('language_scanner:result:show_more'),
-				'href' => '#',
+				'href' => false,
 				'onclick' => '$(this).parents("ul").find(".hidden").show(); $(this).parent().hide(); return false;',
 			]));
 		}
+		
 		$list_items .= elgg_format_element('li', $list_options, strip_tags($key));
 	}
 

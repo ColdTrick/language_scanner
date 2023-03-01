@@ -4,7 +4,6 @@ $plugins = elgg_get_plugins('all');
 
 $ordered_plugins = [];
 foreach ($plugins as $plugin) {
-	
 	$output = elgg_view('output/url', [
 		'icon' => 'eye',
 		'text' => $plugin->getDisplayName(),
@@ -26,7 +25,7 @@ foreach ($plugins as $plugin) {
 	$ordered_plugins[$plugin->getDisplayName()] = elgg_format_element('li', [], $output);
 }
 
-uksort($ordered_plugins, 'strcasecmp');
+uksort($ordered_plugins, 'strnatcasecmp');
 
 $body = elgg_format_element('ul', [], implode(PHP_EOL, $ordered_plugins));
 

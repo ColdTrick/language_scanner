@@ -12,7 +12,7 @@ if (empty($plugin)) {
 
 $title = elgg_echo('language_scanner:result:title', [$plugin->getDisplayName()]);
 
-$plugin_report = new \ColdTrick\LanguageScanner\PluginReport($plugin->getGUID());
+$plugin_report = new \ColdTrick\LanguageScanner\PluginReport($plugin);
 
 $body = elgg_echo('language_scanner:result:total_keys', [$plugin_report->getTotalKeyCount()]) . '<br />';
 $body .= elgg_view('language_scanner/report/unused_translations', ['plugin_report' => $plugin_report]);

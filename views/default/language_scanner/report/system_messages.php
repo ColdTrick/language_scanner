@@ -1,6 +1,14 @@
 <?php
+/**
+ * Show a list of untranslatable system messages (forgot to add elgg_echo())
+ */
+
+use ColdTrick\LanguageScanner\PluginReport;
 
 $plugin_report = elgg_extract('plugin_report', $vars);
+if (!$plugin_report instanceof PluginReport) {
+	return;
+}
 
 $system_messages = $plugin_report->getUntranslatableSystemMessages();
 if (empty($system_messages)) {
@@ -14,11 +22,11 @@ $list_options = [];
 $i = 0;
 foreach ($system_messages as $value) {
 	$i++;
-	if ($i == 5) {
+	if ($i === 5) {
 		$list_options['class'] = 'hidden';
 		$list_items .= elgg_format_element('li', [], elgg_view('output/url', [
 			'text' => elgg_echo('language_scanner:result:show_more'),
-			'href' => '#',
+			'href' => false,
 			'onclick' => '$(this).parents("ul").find(".hidden").show(); $(this).parent().hide(); return false;',
 		]));
 	}

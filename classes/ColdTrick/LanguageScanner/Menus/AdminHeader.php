@@ -1,33 +1,34 @@
 <?php
 
-namespace ColdTrick\LanguageScanner;
+namespace ColdTrick\LanguageScanner\Menus;
 
 use Elgg\Menu\MenuItems;
 
-class PageMenu {
+/**
+ * Add menu items to the admin_header menu
+ */
+class AdminHeader {
 	
 	/**
-	 * Add a menu item to the admin page menu
+	 * Add a menu item to the admin header menu
 	 *
-	 * @param \Elgg\Hook $hook 'register', 'menu:page'
+	 * @param \Elgg\Event $event 'register', 'menu:admin_header'
 	 *
-	 * @return void|MenuItems
+	 * @return null|MenuItems
 	 */
-	public static function registerAdmin(\Elgg\Hook $hook) {
-		
+	public static function register(\Elgg\Event $event): ?MenuItems {
 		if (!elgg_is_admin_logged_in() || !elgg_in_context('admin')) {
-			return;
+			return null;
 		}
 		
 		/* @var $result MenuItems */
-		$result = $hook->getValue();
+		$result = $event->getValue();
 		
 		$result[] = \ElggMenuItem::factory([
 			'name' => 'administer_utilities:language_scanner',
 			'text' => elgg_echo('admin:administer_utilities:language_scanner'),
 			'href' => 'admin/administer_utilities/language_scanner',
 			'parent_name' => 'administer_utilities',
-			'section' => 'administer',
 		]);
 		
 		return $result;
