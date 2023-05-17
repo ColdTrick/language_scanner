@@ -1,0 +1,10 @@
+name: Create ZIP Release
+
+on:
+  release:
+    types: [created, edited]
+
+jobs:
+  build:
+    name: Build release
+    uses: ColdTrick/.github/.github/workflows/create-zip-release.yml@master
