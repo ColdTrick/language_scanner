@@ -1,6 +1,11 @@
 Version history
 ===============
 
+5.0 (2023-05-17):
+
+- changed: conflict with Elgg < 5.0
+- changed: updated for Elgg 5.0
+
 4.0 (2022-06-01):
 
 - changed: increased minimal Elgg version to 4.2
