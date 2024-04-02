@@ -25,10 +25,10 @@ class AdminHeader {
 		$result = $event->getValue();
 		
 		$result[] = \ElggMenuItem::factory([
-			'name' => 'administer_utilities:language_scanner',
+			'name' => 'language_scanner',
 			'text' => elgg_echo('admin:administer_utilities:language_scanner'),
 			'href' => 'admin/administer_utilities/language_scanner',
-			'parent_name' => 'administer_utilities',
+			'parent_name' => 'utilities',
 		]);
 		
 		return $result;

@@ -1,7 +1,7 @@
 Language scanner
 ================
 
-![Elgg 5.0](https://img.shields.io/badge/Elgg-5.0-green.svg)
+![Elgg 5.1](https://img.shields.io/badge/Elgg-5.1-green.svg)
 ![Lint Checks](https://github.com/ColdTrick/language_scanner/actions/workflows/lint.yml/badge.svg?event=push)
 [![Latest Stable Version](https://poser.pugx.org/coldtrick/language_scanner/v/stable.svg)](https://packagist.org/packages/coldtrick/language_scanner)
 [![License](https://poser.pugx.org/coldtrick/language_scanner/license.svg)](https://packagist.org/packages/coldtrick/language_scanner)
