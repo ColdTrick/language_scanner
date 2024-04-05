@@ -3,14 +3,14 @@
  * Show a list of untranslatable system messages (forgot to add elgg_echo())
  */
 
-use ColdTrick\LanguageScanner\PluginReport;
+use ColdTrick\LanguageScanner\LanguageReport;
 
-$plugin_report = elgg_extract('plugin_report', $vars);
-if (!$plugin_report instanceof PluginReport) {
+$report = elgg_extract('report', $vars);
+if (!$report instanceof LanguageReport) {
 	return;
 }
 
-$system_messages = $plugin_report->getUntranslatableSystemMessages();
+$system_messages = $report->getUntranslatableSystemMessages();
 if (empty($system_messages)) {
 	return;
 }

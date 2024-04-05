@@ -1,13 +1,14 @@
 <?php
 
 return array(
-	'language_scanner' => "Language scanner",
-	
 	'admin:language' => "Languages",
 	'admin:language:scan' => "Scan a plugin",
 	'admin:administer_utilities:language_scanner' => 'Language scanner',
 
 	'language_scanner:admin:pick_plugin' => "Pick a plugin below to scan for unused language keys",
+	
+	'language_scanner:report:core' => "Elgg core",
+	'language_scanner:report:core:description' => "Scan the Elgg core files for unused keys",
 	
 	'language_scanner:result:show_more' => "... show more",
 	'language_scanner:result:title' => "Scan results for: %s",

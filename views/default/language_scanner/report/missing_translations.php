@@ -3,16 +3,16 @@
  * List translation keys used in the code, but missing in the translation file
  */
 
-use ColdTrick\LanguageScanner\PluginReport;
+use ColdTrick\LanguageScanner\LanguageReport;
 
-$plugin_report = elgg_extract('plugin_report', $vars);
-if (!$plugin_report instanceof PluginReport) {
+$report = elgg_extract('report', $vars);
+if (!$report instanceof LanguageReport) {
 	return;
 }
 
-$untranslatable = $plugin_report->getUntranslatableCodeLanguageKeys();
+$untranslatable = $report->getUntranslatableCodeLanguageKeys();
 
-$body = elgg_echo('language_scanner:result:code_keys', [$plugin_report->countCodeLanguageKeys()]) . '<br />';
+$body = elgg_echo('language_scanner:result:code_keys', [$report->countCodeLanguageKeys()]) . '<br />';
 $body .= elgg_echo('language_scanner:result:code_keys:untranslatable', [count($untranslatable)]) . '<br />';
 
 if (!empty($untranslatable)) {

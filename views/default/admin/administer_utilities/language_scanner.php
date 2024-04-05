@@ -27,6 +27,22 @@ foreach ($plugins as $plugin) {
 
 uksort($ordered_plugins, 'strnatcasecmp');
 
+// add Elgg core to the options
+$output = elgg_view('output/url', [
+	'icon' => 'eye',
+	'text' => elgg_echo('language_scanner:report:core'),
+	'href' => elgg_http_add_url_query_elements('ajax/view/language_scanner/report', [
+		'plugin_name' => 'core',
+	]),
+	'class' => 'elgg-lightbox',
+	'data-colorbox-opts' => json_encode([
+		'width' => 750,
+		'maxHeight' => '80%',
+	]),
+]);
+$output .= elgg_format_element('span', ['class' => ['elgg-subtext', 'mlm']], elgg_echo('language_scanner:report:core:description'));
+array_unshift($ordered_plugins, elgg_format_element('li', [], $output));
+
 $body = elgg_format_element('ul', [], implode(PHP_EOL, $ordered_plugins));
 
 echo elgg_view_module('inline', elgg_echo('language_scanner:admin:pick_plugin'), $body);

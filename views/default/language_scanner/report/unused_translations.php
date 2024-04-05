@@ -3,16 +3,16 @@
  * Show a list of language keys which are present in the language file but not used in the code
  */
 
-use ColdTrick\LanguageScanner\PluginReport;
+use ColdTrick\LanguageScanner\LanguageReport;
 
-$plugin_report = elgg_extract('plugin_report', $vars);
-if (!$plugin_report instanceof PluginReport) {
+$report = elgg_extract('report', $vars);
+if (!$report instanceof LanguageReport) {
 	return;
 }
 
-$body = elgg_echo('language_scanner:result:unused_keys', [$plugin_report->getUnusedKeyCount()]);
+$body = elgg_echo('language_scanner:result:unused_keys', [$report->getUnusedKeyCount()]);
 
-$unused = $plugin_report->getUnusedKeys();
+$unused = $report->getUnusedKeys();
 if (!empty($unused)) {
 	$list_items = '';
 	

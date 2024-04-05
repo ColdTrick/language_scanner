@@ -5,12 +5,12 @@
 
 use ColdTrick\LanguageScanner\PluginReport;
 
-$plugin_report = elgg_extract('plugin_report', $vars);
-if (!$plugin_report instanceof PluginReport) {
+$report = elgg_extract('report', $vars);
+if (!$report instanceof PluginReport) {
 	return;
 }
 
-$suggestions = $plugin_report->getSuggestions();
+$suggestions = $report->getSuggestions();
 
 $list_items = '';
 if (!empty($suggestions)) {
