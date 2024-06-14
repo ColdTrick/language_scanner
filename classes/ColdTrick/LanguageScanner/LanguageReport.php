@@ -288,7 +288,7 @@ class LanguageReport {
 	 *
 	 * @return \SplFileInfo[]
 	 */
-	protected function getFiles(array $valid_extensions = ['php', 'html', 'js']): array {
+	protected function getFiles(array $valid_extensions = ['php', 'html', 'js', 'mjs']): array {
 		$skip_folders = [
 			'.git',
 			'.scripts',
