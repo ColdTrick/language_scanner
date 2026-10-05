@@ -7,7 +7,9 @@ foreach ($plugins as $plugin) {
 	$output = elgg_view('output/url', [
 		'icon' => 'eye',
 		'text' => $plugin->getDisplayName(),
-		'href' => elgg_http_add_url_query_elements('ajax/view/language_scanner/report', [
+		'href' => elgg_generate_url('ajax', [
+			'type' => 'view',
+			'segments' => 'language_scanner/report',
 			'plugin_name' => $plugin->getID(),
 		]),
 		'class' => 'elgg-lightbox',
@@ -31,7 +33,9 @@ uksort($ordered_plugins, 'strnatcasecmp');
 $output = elgg_view('output/url', [
 	'icon' => 'eye',
 	'text' => elgg_echo('language_scanner:report:core'),
-	'href' => elgg_http_add_url_query_elements('ajax/view/language_scanner/report', [
+	'href' => elgg_generate_url('ajax', [
+		'type' => 'view',
+		'segments' => 'language_scanner/report',
 		'plugin_name' => 'core',
 	]),
 	'class' => 'elgg-lightbox',
