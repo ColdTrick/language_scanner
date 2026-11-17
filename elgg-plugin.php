@@ -2,7 +2,7 @@
 
 return [
 	'plugin' => [
-		'version' => '6.0.2',
+		'version' => '7.0',
 	],
 	'events' => [
 		'register' => [
