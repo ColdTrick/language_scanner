@@ -27,7 +27,9 @@ class AdminHeader {
 		$result[] = \ElggMenuItem::factory([
 			'name' => 'language_scanner',
 			'text' => elgg_echo('admin:administer_utilities:language_scanner'),
-			'href' => 'admin/administer_utilities/language_scanner',
+			'href' => elgg_generate_url('admin', [
+				'segments' => 'administer_utilities/language_scanner',
+			]),
 			'parent_name' => 'utilities',
 		]);
 		
